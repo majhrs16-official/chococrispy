@@ -1,0 +1,8 @@
+Package: chococrispy
+Version: 1.1
+Section: base
+Priority: optional
+Architecture: all
+Maintainer: Majhrs16, email: majhrs16.7@gmail.com.
+Description: Breve implementacion de el algoritmo cake.
+

@@ -1,0 +1,42 @@
+#!/bin/bash
+source /etc/chococrispy/cake.conf
+
+debug() {
+	set -x
+}
+
+kmod() {
+	modprobe ifb numifbs=$1
+}
+
+reset() {
+	tc qdisc del dev $1 root    2>/dev/null
+	tc qdisc del dev $1 ingress 2>/dev/null
+}
+
+up() {
+	for ifname in $@; do
+		ip link set dev $ifname up
+	done
+}
+
+ifb() {
+	tc qdisc  add dev $1 handle ffff: ingress
+	tc filter add dev $1 parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev $2
+}
+
+cake() {
+	tc qdisc add dev $1 root cake bandwidth $2 besteffort triple-isolate wash rtt $3
+}
+
+main() {
+	kmod  1
+	reset $iface
+	reset ifb0
+	up    $iface ifb0
+	ifb   $iface ifb0
+	cake  $iface $upload   $latency
+	cake  ifb0   $download $latency
+}
+
+main
