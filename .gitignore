@@ -1,1 +1,3 @@
-chococrispy.deb
+usr/bin/*
+
+!usr/bin/.gitkeep

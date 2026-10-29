@@ -1,0 +1,1 @@
+dpkg-deb --build src usr/bin/chococrispy.deb
